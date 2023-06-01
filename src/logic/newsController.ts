@@ -30,6 +30,13 @@ export const topStoriesController: RequestHandler = async (req, res, next) => {
 export const summaryController: RequestHandler = async (req, res, next) => {
   try {
     const url = req.body.msn;
+    const uri = new URL(url);
+    if (!uri.hostname.includes("www.msn.")) {
+      res.status(422).json({
+        message: "Only msn links are currently summarizable.",
+      });
+      return;
+    }
     const data = await scrapper(url);
     res.status(200).send(JSON.parse(data.toString()));
   } catch (err) {
