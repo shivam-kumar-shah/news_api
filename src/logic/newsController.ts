@@ -18,10 +18,10 @@ export const topStoriesController: RequestHandler = async (req, res, next) => {
       },
     });
     const data: any[] = (await response.json()).value;
-    res.status(200).send(data ?? []);
+    res.status(200).json(data ?? []);
   } catch (err) {
     console.log(err);
-    res.status(503).send({
+    res.status(503).json({
       message: "Something went wrong.",
     });
   }
@@ -29,7 +29,14 @@ export const topStoriesController: RequestHandler = async (req, res, next) => {
 
 export const summaryController: RequestHandler = async (req, res, next) => {
   try {
-    const url = req.body.msn;
+    const url: string = req.body.msn ?? "";
+    if (url.trim().length == 0) {
+      res.status(422).json({
+        message:
+          "msn body parameter is required. Please refer to / for more details.",
+      });
+      return;
+    }
     const uri = new URL(url);
     if (!uri.hostname.includes("www.msn.")) {
       res.status(422).json({
@@ -41,7 +48,7 @@ export const summaryController: RequestHandler = async (req, res, next) => {
     res.status(200).send(JSON.parse(data.toString()));
   } catch (err) {
     console.log(err);
-    res.status(503).send({
+    res.status(503).json({
       message: "Something went wrong.",
     });
   }
@@ -53,6 +60,14 @@ export const searchController: RequestHandler = async (req, res, next) => {
     const count: number = +(req.query.count ?? 20);
     const page: number = +(req.query.page ?? 1);
     const offset = page > 0 ? count * (page - 1) : 0;
+
+    if (query.trim().length == 0) {
+      res.status(422).json({
+        message:
+          "query paramter is required. Please refer to / for more details.",
+      });
+      return;
+    }
 
     const params = new URLSearchParams();
     params.append("count", count.toString());
@@ -68,9 +83,9 @@ export const searchController: RequestHandler = async (req, res, next) => {
       }
     );
     const data: any[] = (await response.json()).value;
-    res.status(200).send(data ?? []);
+    res.status(200).json(data ?? []);
   } catch (err) {
-    res.status(503).send({
+    res.status(503).json({
       message: "Something went wrong.",
     });
   }

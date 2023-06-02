@@ -3,10 +3,15 @@ import { config } from "dotenv";
 
 import newsRoute from "./apis/news";
 
+import helpJSON from "./readme.json"
+
 config();
 const app = express();
 
 app.use(express.json());
+app.get("/", (req,res,next)=>{
+  res.send(helpJSON);
+})
 app.use("/news", newsRoute);
 
 app.use((req, res, next) => {

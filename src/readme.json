@@ -1,0 +1,55 @@
+{
+  "message": "Welcome to news-api, based on Bing News API",
+  "rouotes": {
+    "/": "Help page : Contains info about how to use the API with routes and parameters.",
+    "/news": {
+      "/search": {
+        "full-path": "[hostname]/news/search",
+        "query-params": {
+          "s": {
+            "definition": "Used for querying data from bing API in the backend",
+            "required": true,
+            "type": "string"
+          },
+          "count": {
+            "definition": "Number of results per query (due to some bug in bing API the results can be a couple less than specified",
+            "required": false,
+            "default": 20,
+            "type": "integer or number"
+          },
+          "page": {
+            "definition": "Used for providing page count, for pagination. The API, in conjecture with count param, sends results in a paginated way. If count property is not specified, the default for count is considered.",
+            "required": false,
+            "default": 1,
+            "type": "positive integer or number"
+          }
+        }
+      },
+      "/top-stories": {
+        "full-path": "[hostname]/news/top-stories",
+        "query-params": {
+          "category": {
+            "definition": "Categorizes the result based on the category specified. Categories can be one of the specified below-",
+            "values": "",
+            "required": false,
+            "default": "world",
+            "type": "string"
+          }
+        }
+      },
+      "summary": {
+        "full-path": "[hostname]/news/summary",
+        "body": {
+          "format": "application/json",
+          "parameters": {
+            "msn": {
+              "definition": "Provide an MSN(only) article link to summarize.",
+              "type": "string",
+              "required": true
+            }
+          }
+        }
+      }
+    }
+  }
+}
