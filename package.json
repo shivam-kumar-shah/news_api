@@ -14,7 +14,7 @@
   },
   "scripts": {
     "start": "node dist/app.js",
-    "start:dev": "nodemon dist/app.js",
+    "serve": "nodemon dist/app.js",
     "watch": "tsc --watch",
     "build": "tsc -b"
   }
